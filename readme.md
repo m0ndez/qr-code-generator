@@ -21,12 +21,9 @@ This repository is a tool to create QR codes that support generating a single QR
 
 4. Scripts to create qr-code
    ```sh
-   npm run generate:die-cut
-   // or
    npm run generate:qr-code
    ```
-
-## License
-
-This project is licensed under the MIT License.
-# qr-code-generator
+5. Scripts to create qr-die-cut
+     ```sh
+   npm run generate:die-cut
+   ```
