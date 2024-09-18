@@ -1,0 +1,26 @@
+{
+  "name": "qr-code-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate:die-cut": "node die-cut.js",
+    "generate:qr-code": "node qr-code.js"
+  },
+  "contributors": [
+    {
+      "email": "chattongchai.r@gmail.com",
+      "name": "Chattongchai Raksitanon",
+      "url": "https://github.com/m0ndez"
+    }
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "pdfkit": "^0.15.0",
+    "qrcode": "^1.5.4"
+  }
+}
