@@ -3,20 +3,16 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs-extra");
 const path = require("path");
 
-const MOCK = [...Array(100).keys()].map(
-  (i) => `SXE-${String(i + 1).padStart(4, "0")}`
-);
-
 // Configuration
 const baseURL = "https://example.com/label/";
 const outputDir = path.join(__dirname, "die-cuts");
-const totalLabels = MOCK.length;
-const labelsPerFile = 1000;
+const totalLabels = 200;
+const labelsPerFile = 50000;
 const qrCodeSize = 80; // Size of each QR code in the PDF
-const margin = 6.5; // Margin between QR codes
-const textHeight = 15; // Height allocated for the text below the QR code
-const pageWidth = 612; // Width of the PDF page (8.5 inches)
-const pageHeight = 792; // Height of the PDF page (11 inches)
+const margin = 4; // Margin between QR codes
+const textHeight = 8; // Height allocated for the text below the QR code
+const pageWidth = 936; // Width of the PDF page (11.7 inches)
+const pageHeight = 1368; // Height of the PDF page (16.5 inches)
 const qrCodesPerRow = Math.floor((pageWidth - margin) / (qrCodeSize + margin));
 const qrCodesPerColumn = Math.floor(
   (pageHeight - margin) / (qrCodeSize + margin + textHeight)
@@ -29,7 +25,7 @@ fs.ensureDirSync(outputDir);
 const generateURLs = (baseURL, total) => {
   const urls = [];
   for (let i = 1; i <= total; i++) {
-    urls.push(`${baseURL}${i}`);
+    urls.push(`${baseURL}SXE-${i.toString().padStart(5, "0")}`);
   }
   return urls;
 };
@@ -40,7 +36,7 @@ const generateQRCode = async (url) => {
     const qrCodeDataURL = await QRCode.toDataURL(url, {
       type: "image/png",
       width: qrCodeSize,
-      margin: 0,
+      margin: 1,
     });
     return qrCodeDataURL;
   } catch (error) {
@@ -74,8 +70,9 @@ const createPDF = async (urls, fileName) => {
       });
       // Add custom text (serial number) below the QR code
       const textX = x;
-      const textY = y + qrCodeSize + 5; // Adjust the 5 to add some margin between QR code and text
-      doc.fontSize(8).text(MOCK[i], textX, textY, {
+      const textY = y + qrCodeSize + 2; // Adjust the 2 to add some margin between QR code and text
+      const serialNumber = urls[i].split("/").pop();
+      doc.fontSize(8).text(serialNumber, textX, textY, {
         width: qrCodeSize,
         align: "center",
       });
